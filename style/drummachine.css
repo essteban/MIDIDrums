@@ -27,7 +27,7 @@ body {
 }
 
 .container {
-	border-radius: 10px;
+	border-radius: 0px;
 	border: 1px solid rgb(230, 230, 230);
 	width: 700px;
 	background-color: rgb(255, 255, 255);
@@ -60,12 +60,29 @@ body {
 	margin-right: 15px;
 }
 
-#pad {
-	height: 268px;
+#padLeft {
+	height: 160px;
+	width: 300px;
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 13px;
 }
-
+#pad {
+	height: 160px;
+	width:300px;
+	float: right;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 13px;
+}
+#space {
+	height: 150px;
+	width: 0px;
+	vertical-align: top;
+	margin-right: 0px;
+}
 #params {
-	height: 155px;
+	height: 125px;
 }
 
 #tools {
@@ -95,8 +112,8 @@ body {
 .combo {
 	width: 158px;
 	height: 15px;
-	background: -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)), 
-		color-stop(2%, rgb(255, 255, 255)), color-stop(5%, rgb(244, 244, 244)), 
+	background: -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)),
+		color-stop(2%, rgb(255, 255, 255)), color-stop(5%, rgb(244, 244, 244)),
 		color-stop(90%, rgb(255, 255, 255)), to(rgb(232, 232, 232)));
 	border-radius: 3px;
 	border: 1px solid rgb(220, 220, 220);
@@ -149,7 +166,7 @@ body {
 }
 
 .slider_container {
-	width: 50px;
+	width: 125px;
 	height: 175px;
 	margin: 0 1px;
 	position: relative;
@@ -277,7 +294,7 @@ body {
 }
 
 #loadingcard {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgb(235, 235, 235)), 
+	background: -webkit-gradient(linear, left top, left bottom, from(rgb(235, 235, 235)),
 	 to(rgb(255, 255, 255)));
   -webkit-box-shadow:0px 2px 3px rgba(0, 0, 0, 0.2);
 	width: 260px;
