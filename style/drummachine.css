@@ -45,11 +45,6 @@ body {
 .buttons_row {
 }
 
-#LED_row {
-	margin-top: 8px;
-	margin-bottom: 12px;
-}
-
 .label {
 	display: inline-block;
 	vertical-align: top;
@@ -166,7 +161,7 @@ body {
 }
 
 .slider_container {
-	width: 125px;
+	width: 90px;
 	height: 175px;
 	margin: 0 1px;
 	position: relative;

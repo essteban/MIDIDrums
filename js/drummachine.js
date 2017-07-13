@@ -10,6 +10,7 @@ var compressor;
 var masterGainNode;
 var effectLevelNode;
 var filterNode;
+var mixGain;
 
 // Each effect impulse response has a specific overall desired dry and wet volume.
 // For example in the telephone filter, it's necessary to make the dry volume 0 to correctly hear the effect.
@@ -46,6 +47,7 @@ function cloneBeat(source) {
     beat.tempo = source.tempo;
     beat.swingFactor = source.swingFactor;
     beat.effectMix = source.effectMix;
+    beat.mixGain = source.mixGain;
     beat.kickPitchVal = source.kickPitchVal;
     beat.snarePitchVal = source.snarePitchVal;
     beat.hihatPitchVal = source.hihatPitchVal;
@@ -161,7 +163,7 @@ Kit.prototype.load = function() {
 
     this.loadSample(0, kickPath, false);
     this.loadSample(1, snarePath, false);
-    this.loadSample(2, hihatPath, true);  // we're panning only the hihat
+    this.loadSample(2, hihatPath, false);
     this.loadSample(3, tom1Path, false);
     this.loadSample(4, tom2Path, false);
     this.loadSample(5, tom3Path, false);
@@ -451,23 +453,14 @@ function initControls() {
 
     // sliders
     document.getElementById('effect_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    //document.getElementById('tom1_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    //document.getElementById('tom2_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    //document.getElementById('tom3_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    //document.getElementById('hihat_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
+    document.getElementById('cross_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
     document.getElementById('snare_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
     document.getElementById('kick_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
-    //document.getElementById('swing_thumb').addEventListener('mousedown', handleSliderMouseDown, true);
 
     document.getElementById('effect_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    //document.getElementById('tom1_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    //document.getElementById('tom2_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    //document.getElementById('tom3_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    //document.getElementById('hihat_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
+    document.getElementById('cross_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
     document.getElementById('snare_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
     document.getElementById('kick_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-    //document.getElementById('swing_thumb').addEventListener('dblclick', handleSliderDoubleClick, true);
-
     // tool buttons
     document.getElementById('play').addEventListener('mousedown', handlePlay, true);
     document.getElementById('stop').addEventListener('mousedown', handleStop, true);
@@ -770,6 +763,10 @@ function sliderSetValue(slider, value) {
     case 'swing_thumb':
         theBeat.swingFactor = value;
         break;
+    case 'cross_thumb':
+        theBeat.mixGain = value;
+        setMixLevel(theBeat);
+        break;
     }
 }
 
@@ -941,6 +938,9 @@ function setEffectLevel() {
     effectLevelNode.gain.value = theBeat.effectMix * effectWetMix;
 }
 
+function setMixLevel() {
+    masterGainNode.gain.value = theBeat.mixGain;
+}
 
 function handleDemoMouseDown(event) {
     var loaded = false;
@@ -1018,6 +1018,7 @@ function handleLoadOk(event) {
 
     // Change the volume of the convolution effect.
     setEffectLevel(theBeat);
+    setMixLevel(theBeat);
 
     // Apply values from sliders
     sliderSetValue('effect_thumb', theBeat.effectMix);
@@ -1028,6 +1029,7 @@ function handleLoadOk(event) {
     sliderSetValue('tom2_thumb', theBeat.tom2PitchVal);
     sliderSetValue('tom3_thumb', theBeat.tom3PitchVal);
     sliderSetValue('swing_thumb', theBeat.swingFactor);
+    sliderSetValue('cross_thumb', theBeat.mixGain);
 
     // Clear out the text area post-processing
     elTextarea.value = '';
@@ -1079,6 +1081,7 @@ function loadBeat(beat) {
     sliderSetValue('tom2_thumb', theBeat.tom2PitchVal);
     sliderSetValue('tom3_thumb', theBeat.tom3PitchVal);
     sliderSetValue('swing_thumb', theBeat.swingFactor);
+    sliderSetValue('cross_thumb', theBeat.mixGain);
 
     updateControls();
     setActiveInstrument(0);
@@ -1108,6 +1111,7 @@ function updateControls() {
     sliderSetPosition('effect_thumb', theBeat.effectMix);
     sliderSetPosition('kick_thumb', theBeat.kickPitchVal);
     sliderSetPosition('snare_thumb', theBeat.snarePitchVal);
+    sliderSetPosition('cross_thumb', theBeat.mixGain);
 }
 
 
