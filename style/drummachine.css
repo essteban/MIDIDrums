@@ -3,6 +3,11 @@ body {
 	color: rgb(121, 121, 121);
 	font-family: 'Droid Sans', Arial, sans-serif;
 	font-size: 13px;
+	background: url(../Imagenes/background1.png) no-repeat center center fixed;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+  background-size:cover;
 }
 
 * {
@@ -26,60 +31,50 @@ body {
 }
 
 .container {
-	border-radius: 0px;
-	border: 1px solid rgb(230, 230, 230);
-	width: 700px;
-	background-color: rgb(255, 255, 255);
-	margin: 0px auto;
-	padding: 20px 20px 15px 20px;
-  -webkit-box-shadow:0px 2px 3px rgba(0, 0, 0, 0.2);
-  display: none;
+	position: relative;
+	text-align: center;
 }
 
-#io { display:block; padding:5px 20px;}
-.container.active {
-	display: block;
+.bg {
+	position: relative;
+  display: inline-block;
+	z-index: 1;
 }
 
 .buttons_row {
+	z-index: 1000;
 }
 
-.label {
-	display: inline-block;
-	vertical-align: top;
-	width: 60px;
-	position: relative;
-	top: 12px;
-	text-align: right;
-	margin-right: 15px;
+.buttons_Folk {
+	position: absolute;
+	display: block;
+	float: left;
+  margin: 0 0 0 20px;
+	z-index: 1000;
+	position: absolute;
+	top: 245px;
+	left: 200px;
 }
 
-#padLeft {
-	height: 160px;
-	width: 300px;
-	display: inline-block;
-	vertical-align: top;
-	margin-right: 13px;
+.buttons_FolkDM {
+	position: absolute;
+	display: block;
+	float: left;
+  margin: 0 0 0 20px;
+	z-index: 1000;
+	position: absolute;
+	top: 255px;
+	left: 385px;
 }
-#pad {
-	height: 160px;
-	width:300px;
+.buttons_FolkDMR {
+	position: absolute;
+	display: block;
 	float: right;
-	display: inline-block;
-	vertical-align: middle;
-	margin-right: 13px;
-}
-#space {
-	height: 20px;
-	vertical-align: top;
-	margin-right: 0px;
-}
-#params {
-	height: 125px;
-}
-
-#tools {
-	height: 36px;
+  margin: 0 0 0 20px;
+	z-index: 1000;
+	position: absolute;
+	top: 255px;
+	right: 150px;
 }
 
 #paramsleft_container {
@@ -101,15 +96,19 @@ body {
 #beatlabel {
 	top: 8px;
 }
-
+.label {
+	display: inline-block;
+	vertical-align: top;
+	width: 10px;
+	position: relative;
+	top: 12px;
+	text-align: right;
+	margin-right: 10px;
+}
 .combo {
 	width: 158px;
 	height: 15px;
-	background: -webkit-gradient(linear, left top, left bottom, from(rgb(255, 255, 255)),
-		color-stop(2%, rgb(255, 255, 255)), color-stop(5%, rgb(244, 244, 244)),
-		color-stop(90%, rgb(255, 255, 255)), to(rgb(232, 232, 232)));
-	border-radius: 3px;
-	border: 1px solid rgb(220, 220, 220);
+
 	color: rgb(76, 76, 76);
 	display: inline-block;
 	vertical-align: top;
@@ -123,7 +122,34 @@ body {
 	left: 150px;
 	top: 11px;
 }
+.dummy {
+	position: absolute;
+	right: 50px;
+	bottom: -25px;
+	z-index: 1000;
+}
 
+.containerDM {
+	position: relative;
+	vertical-align: top;
+	horizontal-align: center;
+	top: -40px;
+	z-index: 1;
+}
+
+.mixerButtons {
+	position: absolute;
+	right: 480px;
+	bottom: 200px;
+	z-index: 2;
+}
+
+.selectorButtons {
+	position: absolute;
+	left: 145px;
+	bottom: 260px;
+	z-index: 2;
+}
 .combolist {
 	list-style-type: none;
 	position: absolute;
@@ -131,12 +157,10 @@ body {
 	left: -1px;
 	margin: 0;
 	background-color: rgb(249, 249, 249);
-	border-radius: 2px;
-	border: 1px solid rgb(200, 200, 200);
 	width: 160px;
 	padding: 5px;
 	display: none;
-	z-index: 1;
+	z-index: 2;
 }
 
 #effectlist {
@@ -150,7 +174,6 @@ body {
 
 .combolist li {
 	padding: 2px;
-	border-radius: 2px;
 }
 
 .combolist li:hover {
@@ -158,53 +181,47 @@ body {
 	background-color: rgb(38, 47, 104);
 }
 
-.slider_container {
+.slider_container1 {
 	width: 90px;
 	height: 175px;
-	margin: 0 1px;
-	position: relative;
+	bottom: 80px;
+	left: 518px;
+	position: absolute;
 	display: inline-block;
-	vertical-align: top;
+	z-index: 1000;
 }
-
-#swing_container {
-	width: 250px;
-	height: 30px;
-	margin-bottom: 10px;
-}
-
-.slider_groove {
-	margin: 0 auto;
+.slider_container2 {
+	width: 90px;
+	height: 175px;
+	bottom: 80px;
+	left: 598px;
+	position: absolute;
 	display: inline-block;
-	vertical-align: top;
-	position: relative;
+	z-index: 1000;
 }
 
 .slider_thumb {
 	position: absolute;
-	left: 10px;
+	left: 15px;
 	top: 0;
 }
 
-.slider_label {
-	text-align: center;
-	margin-top: 13px;
-}
-
-#tempo_container {
-	height: 40px;
-	margin-bottom: 10px;
+.tempo_container {
+	position: absolute;
+	left: 410px;
+	bottom: 195px;
+	z-index: 1000;
 }
 
 #tempodisplay {
-	background-image: url('../images/tempo_bg.png');
-	width: 57px;
-	height: 20px;
+	background-image: url('../Imagenes/tempo_bg.png');
+	width: 50px;
+	height: 23px;
 	display: inline-block;
 	vertical-align: top;
 	padding: 10px 20px;
-	text-align: right;
-	color: rgb(76, 76 ,76);
+	text-align: left;
+	color: rgb(0, 255 ,0);
 }
 
 #tempo {
@@ -222,15 +239,6 @@ body {
 	left: 1px;
 }
 
-.vrule {
-	width: 1px;
-	height: 160px;
-	background-color: rgb(229, 229, 229);
-	margin: 0 8px;
-	display: inline-block;
-	vertical-align: top;
-}
-
 #play, #stop {
 	margin-right: 12px;
 }
@@ -246,21 +254,25 @@ body {
 #stop.playing {
 	display: inline;
 }
-
-#demos_container {
-	margin-left: 10px;
+#load_container {
+	height: 320px;
+	width: 426px;
+	background-color: rgb(255, 200, 28);
+	z-index: 1000;
+	border: 1px solid black;
+	left: 400px;
+	top: 400px;
+	position: absolute;
+	display: none;
 }
 
-#save_container, #load_container {
-	height: 521px;
-}
-
-#save_textarea, #load_textarea {
-	width: 607px;
-	height: 270px;
-	margin: 20px 40px;
+#load_textarea {
+	width: 407px;
+	height: 170px;
+	margin: 3px 7px;
 	font-size: 12px;
 	-webkit-user-select: text !important;
+	z-index: 1000;
 }
 
 #save_ok {
@@ -292,7 +304,6 @@ body {
   -webkit-box-shadow:0px 2px 3px rgba(0, 0, 0, 0.2);
 	width: 260px;
 	height: 60px;
-	border-radius: 10px;
 	margin: 210px auto;
 	padding: 10px;
 }
@@ -309,3 +320,150 @@ body {
 
 img.preload { display: none; }
 #MIDIPlugin { visibility: hidden; }
+
+#io { display:block; padding:5px 20px;}
+
+.label {
+	display: inline-block;
+	vertical-align: top;
+	width: 10px;
+	position: relative;
+	top: 12px;
+	text-align: right;
+	margin-right: 10px;
+}
+
+#padLeft {
+	height: 240px;
+	width: 340px;
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 220px;
+	margin-top: 210px;
+	overflow: auto;
+}
+
+.buttons_rowL {
+
+}
+.buttons_rowR {
+}
+
+.buttons_col {
+	display: block;
+	float: left;
+  margin: 0 0 0 20px;
+}
+
+#space {
+	height: 20px;
+	vertical-align: top;
+	margin-right: 0px;
+}
+
+#tools {
+	height: 10px;
+}
+
+.btn {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+#kitlabel, #effectlabel, #swinglabel {
+	top: 6px;
+}
+
+#beatlabel {
+	top: 8px;
+}
+
+.combo {
+	width: 158px;
+	height: 15px;
+
+	color: rgb(76, 76, 76);
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	padding: 6px;
+	margin-bottom: 10px;
+}
+
+.combo img {
+	position: absolute;
+	left: 150px;
+	top: 11px;
+}
+
+.containerDM {
+	position: relative;
+	vertical-align: top;
+	horizontal-align: center;
+	top: -40px;
+	z-index: 1;
+}
+.containerMixer {
+	position: absolute;
+	left: 280px;
+	top: 300px;
+	z-index: 2;
+}
+.mixerButtons {
+	position: absolute;
+	right: 480px;
+	bottom: 200px;
+	z-index: 2;
+}
+
+.selectorButtons {
+	position: absolute;
+	left: 145px;
+	bottom: 260px;
+	z-index: 2;
+}
+.combolist {
+	list-style-type: none;
+	position: absolute;
+	top: 27px;
+	left: -1px;
+	margin: 0;
+	background-color: rgb(249, 249, 249);
+	width: 160px;
+	padding: 5px;
+	display: none;
+	z-index: 2;
+}
+
+#effectlist {
+	height: 200px;
+	overflow: auto;
+}
+
+.combolist li {
+	padding: 2px;
+}
+
+.combolist li:hover {
+	color: rgb(255, 255, 255);
+	background-color: rgb(38, 47, 104);
+}
+
+#load_buttons {
+	margin: 0 auto;
+	width: 160px;
+}
+
+#load_ok, #load_cancel {
+	margin: 0 3px;
+}
+
+#loading {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}

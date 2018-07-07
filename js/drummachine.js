@@ -29,7 +29,7 @@ var kMaxSwing = .08;
 
 var currentKit;
 
-var beatReset = {"kitIndex":0,"effectIndex":0,"tempo":120,"swingFactor":0,"effectMix":0.25,"kickPitchVal":0.5,"genPitchVal":0.5,"hihatPitchVal":0.5,"tom1PitchVal":0.5,"tom2PitchVal":0.5,"tom3PitchVal":0.5,"rhythm1":[0,0,0,0],"rhythm2":[0,0,0,0],"rhythm3":[0,0,0,0],"rhythm4":[0,0,0,0],"rhythm5":[0,0,0,0],"rhythm6":[0,0,0,0]};
+var beatReset = {"kitIndex":0,"effectIndex":1,"tempo":120,"swingFactor":0,"effectMix":0.25,"kickPitchVal":0.5,"genPitchVal":0.5,"hihatPitchVal":0.5,"tom1PitchVal":0.5,"tom2PitchVal":0.5,"tom3PitchVal":0.5,"rhythm1":[0,0,0,0],"rhythm2":[0,0,0,0],"rhythm3":[0,0,0,0],"rhythm4":[0,0,0,0],"rhythm5":[0,0,0,0],"rhythm6":[0,0,0,0]};
 
 function cloneBeat(source) {
     var beat = new Object();
@@ -79,7 +79,7 @@ var kitRockCount = 0;
 
 var kitName = ["tambora","bunde","chande","cumbia","porroc"];
 
-var kitNameRock = [
+var kitNamePretty = [
     "tech"
     ];
 
@@ -331,7 +331,7 @@ function startLoadingAssets() {
 
 function showPlayAvailable() {
     var play = document.getElementById("play");
-    play.src = "images/btn_play.png";
+    play.src = "Imagenes/btn_play.png";
 }
 
 function init() {
@@ -408,11 +408,16 @@ function initControls() {
     document.getElementById('play').addEventListener('mousedown', handlePlay, true);
     document.getElementById('stop').addEventListener('mousedown', handleStop, true);
     document.getElementById('save').addEventListener('mousedown', handleSave, true);
-    document.getElementById('save_ok').addEventListener('mousedown', handleSaveOk, true);
+    //document.getElementById('save_ok').addEventListener('mousedown', handleSaveOk, true);
     document.getElementById('load').addEventListener('mousedown', handleLoad, true);
     document.getElementById('load_ok').addEventListener('mousedown', handleLoadOk, true);
     document.getElementById('load_cancel').addEventListener('mousedown', handleLoadCancel, true);
     document.getElementById('reset').addEventListener('mousedown', handleReset, true);
+    document.getElementById('Tambora').addEventListener('mousedown', handleSelector, true);
+    document.getElementById('Cumbia').addEventListener('mousedown', handleSelector, true);
+    document.getElementById('Porro').addEventListener('mousedown', handleSelector, true);
+    document.getElementById('Chande').addEventListener('mousedown', handleSelector, true);
+    document.getElementById('Bunde').addEventListener('mousedown', handleSelector, true);
 
     var elBody = document.getElementById('body');
     elBody.addEventListener('mousemove', handleMouseMove, true);
@@ -578,6 +583,33 @@ function schedule() {
         }
         advanceNote();
     }
+}
+
+function setEffect(index) {
+    if (index > 0 && !impulseResponseList[index].isLoaded()) {
+        alert('Sorry, this effect is still loading.  Try again in a few seconds :)');
+        return;
+    }
+
+    theBeat.effectIndex = index;
+    effectDryMix = impulseResponseInfoList[index].dryMix;
+    effectWetMix = impulseResponseInfoList[index].wetMix;
+    convolver.buffer = impulseResponseList[index].buffer;
+
+  // Hack - if the effect is meant to be entirely wet (not unprocessed signal)
+  // then put the effect level all the way up.
+    if (effectDryMix == 0)
+        theBeat.effectMix = 1;
+
+    setEffectLevel(theBeat);
+    sliderSetValue('effect_thumb', theBeat.effectMix);
+    updateControls();
+
+}
+
+function setEffectLevel() {
+    // Factor in both the preset's effect level and the blending level (effectWetMix) stored in the effect itself.
+    effectLevelNode.gain.value = theBeat.effectMix * effectWetMix;
 }
 
 function handleSliderMouseDown(event) {
@@ -754,7 +786,7 @@ function handleStop(event) {
 function writeToFile(text){
   var pom = document.createElement('a');
   var date = new Date();
-  date = date + ".txt"
+  date = "Fusion" + date.getTime() + ".txt"
   pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
   pom.setAttribute('download', date);
 
@@ -769,14 +801,14 @@ function writeToFile(text){
 }
 
 function handleSave(event) {
-    toggleSaveContainer();
-    var elTextarea = document.getElementById('save_textarea');
-    elTextarea.value = JSON.stringify(theBeat);
+    //toggleSaveContainer();
+    //var elTextarea = document.getElementById('save_textarea');
+    //elTextarea.value = JSON.stringify(theBeat);
     writeToFile(JSON.stringify(theBeat));
 }
 
 function handleSaveOk(event) {
-    toggleSaveContainer();
+    //toggleSaveContainer();
 }
 
 function handleLoad(event) {
@@ -784,27 +816,33 @@ function handleLoad(event) {
 }
 
 function handleLoadOk(event) {
-    var elTextarea = document.getElementById('load_textarea');
-    theBeat = JSON.parse(elTextarea.value);
+  var elTextarea = document.getElementById('load_textarea');
+  theBeat = JSON.parse(elTextarea.value);
 
-    // Set drumkit
-    currentKit = kits[theBeat.kitIndex];
-    currentKitRock = kits[theBeat.kitRockIndex];
+  // Set drumkit
+  currentKit = kits[theBeat.kitIndex];
 
-    // Apply values from sliders
-    sliderSetValue('effect_thumb', theBeat.effectMix);
-    sliderSetValue('pitch_thumb', theBeat.genPitchVal);
-    sliderSetValue('hihat_thumb', theBeat.hihatPitchVal);
-    sliderSetValue('tom1_thumb', theBeat.tom1PitchVal);
-    sliderSetValue('tom2_thumb', theBeat.tom2PitchVal);
-    sliderSetValue('tom3_thumb', theBeat.tom3PitchVal);
-    sliderSetValue('swing_thumb', theBeat.swingFactor);
-    sliderSetValue('cross_thumb', masterGainNode.gain.value);
+  // Set effect
+  setEffect(theBeat.effectIndex);
 
-    elTextarea.value = '';
+  // Change the volume of the convolution effect.
+  setEffectLevel(theBeat);
 
-    toggleLoadContainer();
-    updateControls();
+  // Apply values from sliders
+  sliderSetValue('effect_thumb', theBeat.effectMix);
+  sliderSetValue('kick_thumb', theBeat.kickPitchVal);
+  sliderSetValue('snare_thumb', theBeat.genPitchVal);
+  sliderSetValue('hihat_thumb', theBeat.hihatPitchVal);
+  sliderSetValue('tom1_thumb', theBeat.tom1PitchVal);
+  sliderSetValue('tom2_thumb', theBeat.tom2PitchVal);
+  sliderSetValue('tom3_thumb', theBeat.tom3PitchVal);
+  sliderSetValue('swing_thumb', theBeat.swingFactor);
+
+  // Clear out the text area post-processing
+  elTextarea.value = '';
+
+  toggleLoadContainer();
+  updateControls();
 }
 
 function handleLoadCancel(event) {
@@ -812,17 +850,23 @@ function handleLoadCancel(event) {
 }
 
 function toggleSaveContainer() {
-    document.getElementById('pad').classList.toggle('active');
-    document.getElementById('params').classList.toggle('active');
-    document.getElementById('tools').classList.toggle('active');
-    document.getElementById('save_container').classList.toggle('active');
+    //document.getElementById('pad').classList.toggle('active');
+    //document.getElementById('params').classList.toggle('active');
+    //document.getElementById('tools').classList.toggle('active');
+    //document.getElementById('save_container').classList.toggle('active');
 }
-
+var loadStatus = false;
 function toggleLoadContainer() {
-    document.getElementById('pad').classList.toggle('active');
+    /*document.getElementById('pad').classList.toggle('active');
     document.getElementById('params').classList.toggle('active');
-    document.getElementById('tools').classList.toggle('active');
-    document.getElementById('load_container').classList.toggle('active');
+    document.getElementById('tools').classList.toggle('active');*/
+    loadStatus = !loadStatus;
+    if(loadStatus){
+      document.getElementById('load_container').style["display"] = "block";
+    }
+    else{
+        document.getElementById('load_container').style["display"] = "none";
+    }
 }
 
 function handleReset(event) {
@@ -834,6 +878,48 @@ function handleReset(event) {
             drawNote(0,i,j);
         }
     }
+}
+
+function handleSelector(event) {
+   changeText(event.target.id );
+}
+
+function bgImage(value) {
+    if(value == "Tambora")
+        document.getElementById('Tambora').src='Imagenes/tamboraon.png';
+    if(value == "Bunde")
+        document.getElementById('Bunde').src='Imagenes/bundeon.png';
+    if(value == "Chande")
+        document.getElementById('Chande').src='Imagenes/chandeon.png';
+    if(value == "Cumbia")
+        document.getElementById('Cumbia').src='Imagenes/cumbiaon.png';
+    if(value == "Porro")
+        document.getElementById('Porro').src='Imagenes/porroon.png';
+    if(value == "save")
+        document.getElementById('save').src='Imagenes/guardar_on.png';
+    if(value == "load")
+        document.getElementById('load').src='Imagenes/cargar_on.png';
+    if(value == "reset")
+        document.getElementById('reset').src='Imagenes/reiniciar_on.png';
+}
+
+function bgOutImage(value) {
+  if(value == "Tambora")
+      document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
+  if(value == "Bunde")
+      document.getElementById('Bunde').src='Imagenes/bundeoff.png';
+  if(value == "Chande")
+      document.getElementById('Chande').src='Imagenes/chandeoff.png';
+  if(value == "Cumbia")
+      document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
+  if(value == "Porro")
+      document.getElementById('Porro').src='Imagenes/porrooff.png';
+  if(value == "save")
+      document.getElementById('save').src='Imagenes/btn_save.png';
+  if(value == "load")
+      document.getElementById('load').src='Imagenes/btn_load.png';
+  if(value == "reset")
+      document.getElementById('reset').src='Imagenes/btn_reset.png';
 }
 
 function loadBeat(beat) {
@@ -870,6 +956,7 @@ function updateControls() {
                 case 4: notes = theBeat.rhythm5; break;
                 case 5: notes = theBeat.rhythm6; break;
             }
+            drawNote(notes[i], i, j);
         }
     }
     document.getElementById('tempo').innerHTML = theBeat.tempo;
@@ -877,17 +964,27 @@ function updateControls() {
     sliderSetPosition('pitch_thumb', theBeat.genPitchVal);
     sliderSetPosition('cross_thumb', masterGainNode.gain.value);
 
-    if(stateReady)
+    if(stateReady){
       showPlayAvailable();
+    }
 }
 
 function drawNote(draw, xindex, yindex) {
 
     var elButton = document.getElementById(instruments[yindex] + '_' + xindex);
-    switch (draw) {
-        case 0: elButton.src = 'images/button_off.png'; break;
-        case 1: elButton.src = 'images/button_half.png'; break;
-        case 2: elButton.src = 'images/button_on.png'; break;
+    if(yindex < 3){
+        switch (draw) {
+            case 0: elButton.src = 'Imagenes/button_offM.png'; break;
+            case 1: elButton.src = 'Imagenes/button_halfM.png'; break;
+            case 2: elButton.src = 'Imagenes/button_onM.png'; break;
+        }
+    }
+    if(yindex >= 3){
+        switch (draw) {
+            case 0: elButton.src = 'Imagenes/button_off.png'; break;
+            case 1: elButton.src = 'Imagenes/button_half.png'; break;
+            case 2: elButton.src = 'Imagenes/button_on.png'; break;
+        }
     }
 }
 
@@ -898,11 +995,6 @@ function changeText(value) {
   if(value == "Bunde calle"){
       stateReady = true;
       updateControls();
-      document.getElementById('pText').innerHTML = "Seleccionaste " + value;
-
-      document.getElementById('linea1f').innerHTML = "Bombo";
-      document.getElementById('linea2f').innerHTML = "Platillo";
-      document.getElementById('linea3f').innerHTML = "Redoblante";
 
       theBeat.tempo = 135;
       document.getElementById('tempo').innerHTML = theBeat.tempo;
@@ -911,24 +1003,12 @@ function changeText(value) {
       stateReady = true;
       updateControls();
 
-      document.getElementById('pText').innerHTML = "Seleccionaste " + value;
-
-      document.getElementById('linea1f').innerHTML = "Bombo";
-      document.getElementById('linea2f').innerHTML = "Platillo";
-      document.getElementById('linea3f').innerHTML = "Redoblante";
-
       theBeat.tempo = 130;
       document.getElementById('tempo').innerHTML = theBeat.tempo;
     }
    if(value == "Tambora"){
      stateReady = true;
      updateControls();
-
-     document.getElementById('pText').innerHTML = "Seleccionaste " + value;
-
-     document.getElementById('linea1f').innerHTML = "Alegre";
-     document.getElementById('linea2f').innerHTML = "Tambora";
-     document.getElementById('linea3f').innerHTML = "Maracas";
 
      theBeat.tempo = 120;
      tempo = 120;
@@ -938,12 +1018,6 @@ function changeText(value) {
      stateReady = true;
      updateControls();
 
-     document.getElementById('pText').innerHTML = "Seleccionaste " + value;
-
-     document.getElementById('linea1f').innerHTML = "Alegre";
-     document.getElementById('linea2f').innerHTML = "Tambora";
-     document.getElementById('linea3f').innerHTML = "Maracas";
-
      theBeat.tempo = 140;
      document.getElementById('tempo').innerHTML = theBeat.tempo;
    }
@@ -951,19 +1025,13 @@ function changeText(value) {
      stateReady = true;
      updateControls();
 
-     document.getElementById('pText').innerHTML = "Seleccionaste " + value;
-
-     document.getElementById('linea1f').innerHTML = "Alegre";
-     document.getElementById('linea2f').innerHTML = "Llamador";
-     document.getElementById('linea3f').innerHTML = "Tambora";
-
      theBeat.tempo = 104;
      document.getElementById('tempo').innerHTML = theBeat.tempo;
    }
    if(value == "reset"){
       stateReady = false;
 
-      document.getElementById('pText').innerHTML = "Selecciona un ritmo folklórico";
+      /*document.getElementById('pText').innerHTML = "Selecciona un ritmo folklórico";
 
       document.getElementById('linea1f').innerHTML = "";
       document.getElementById('linea2f').innerHTML = "";
@@ -971,6 +1039,6 @@ function changeText(value) {
 
       document.getElementById('linea1m').innerHTML = "";
       document.getElementById('linea2m').innerHTML = "";
-      document.getElementById('linea3m').innerHTML = "";
+      document.getElementById('linea3m').innerHTML = "";*/
     }
   }
