@@ -106,28 +106,6 @@ function Kit(name) {
     this.a1 = 0;
     this.a2 = 0;
     this.a3 = 0;
-    /*this.a4 = 0;
-    this.b1 = 0;
-    this.b2 = 0;
-    this.b3 = 0;
-    this.b4 = 0;
-    this.c1 = 0;
-    this.c2 = 0;
-    this.c3 = 0;
-    this.c4 = 0;
-
-    this.m1 = 0;
-    this.m2 = 0;
-    this.m3 = 0;
-    this.m4 = 0;
-    this.n1 = 0;
-    this.n2 = 0;
-    this.n3 = 0;
-    this.n4 = 0;
-    this.l1 = 0;
-    this.l2 = 0;
-    this.l3 = 0;
-    this.l4 = 0;*/
 
     this.instrumentCount = kNumInstruments;
     this.instrumentLoadCount = 0;
@@ -423,7 +401,6 @@ function initControls() {
     document.getElementById('play').addEventListener('mousedown', handlePlay, true);
     document.getElementById('stop').addEventListener('mousedown', handleStop, true);
     document.getElementById('save').addEventListener('mousedown', handleSave, true);
-    //document.getElementById('save_ok').addEventListener('mousedown', handleSaveOk, true);
     document.getElementById('load').addEventListener('mousedown', handleLoad, true);
     document.getElementById('load_ok').addEventListener('mousedown', handleLoadOk, true);
     document.getElementById('load_cancel').addEventListener('mousedown', handleLoadCancel, true);
