@@ -30,8 +30,10 @@ body {
 }
 
 .container {
+	width:1280px;
+	height:800px;
+	background-image: url("../Imagenes/background.png");
 	position: relative;
-	text-align: center;
 }
 
 .bg {
@@ -50,7 +52,6 @@ body {
 	float: left;
   margin: 0 0 0 20px;
 	z-index: 1000;
-	position: absolute;
 	top: 245px;
 	left: 200px;
 }
@@ -61,7 +62,6 @@ body {
 	float: left;
   margin: 0 0 0 20px;
 	z-index: 1000;
-	position: absolute;
 	top: 255px;
 	left: 385px;
 }
@@ -71,7 +71,6 @@ body {
 	float: right;
   margin: 0 0 0 20px;
 	z-index: 1000;
-	position: absolute;
 	top: 255px;
 	right: 150px;
 }
@@ -181,34 +180,34 @@ body {
 }
 
 .slider_container1 {
+	position: absolute;
 	width: 90px;
 	height: 175px;
 	bottom: 80px;
-	left: 518px;
-	position: absolute;
+	left: 540px;
 	display: inline-block;
 	z-index: 1000;
 }
 .slider_container2 {
+	position: absolute;
 	width: 90px;
 	height: 175px;
 	bottom: 80px;
-	left: 598px;
-	position: absolute;
+	left: 621px;
 	display: inline-block;
 	z-index: 1000;
 }
 
 .slider_thumb {
 	position: absolute;
-	left: 15px;
-	top: 0;
+	left: -8px;
+	top: 0px;
 }
 
 .tempo_container {
 	position: absolute;
 	left: 410px;
-	bottom: 195px;
+	bottom: 175px;
 	z-index: 1000;
 }
 
@@ -403,16 +402,11 @@ img.preload { display: none; }
 	top: -40px;
 	z-index: 1;
 }
-.containerMixer {
-	position: absolute;
-	left: 280px;
-	top: 300px;
-	z-index: 2;
-}
+
 .mixerButtons {
 	position: absolute;
-	right: 480px;
-	bottom: 200px;
+	right: 500px;
+	bottom: 230px;
 	z-index: 2;
 }
 
