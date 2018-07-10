@@ -15,20 +15,6 @@ body {
 	cursor: pointer !important;
 }
 
-#title {
-	font-family: 'Michroma', 'Droid Sans', Arial, sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	display: block;
-	margin: 10px 0 15px 0;
-	text-align: center;
-}
-
-#version {
-	font-weight: bold;
-	font-size: 12px;
-}
-
 .container {
 	width:1280px;
 	height:800px;
@@ -72,59 +58,13 @@ body {
   margin: 0 0 0 20px;
 	z-index: 1000;
 	top: 255px;
-	right: 150px;
-}
-
-#paramsleft_container {
-	display: inline-block;
-	vertical-align: top;
-	margin-right: 13px;
+	right: 165px;
 }
 
 .btn {
 	padding: 0;
 	margin: 0;
 	border: 0;
-}
-
-#kitlabel, #effectlabel, #swinglabel {
-	top: 6px;
-}
-
-#beatlabel {
-	top: 8px;
-}
-.label {
-	display: inline-block;
-	vertical-align: top;
-	width: 10px;
-	position: relative;
-	top: 12px;
-	text-align: right;
-	margin-right: 10px;
-}
-.combo {
-	width: 158px;
-	height: 15px;
-
-	color: rgb(76, 76, 76);
-	display: inline-block;
-	vertical-align: top;
-	position: relative;
-	padding: 6px;
-	margin-bottom: 10px;
-}
-
-.combo img {
-	position: absolute;
-	left: 150px;
-	top: 11px;
-}
-.dummy {
-	position: absolute;
-	right: 50px;
-	bottom: -25px;
-	z-index: 1000;
 }
 
 .containerDM {
@@ -137,46 +77,9 @@ body {
 
 .mixerButtons {
 	position: absolute;
-	right: 480px;
-	bottom: 200px;
+	right: 500px;
+	bottom: 100px;
 	z-index: 2;
-}
-
-.selectorButtons {
-	position: absolute;
-	left: 145px;
-	bottom: 260px;
-	z-index: 2;
-}
-.combolist {
-	list-style-type: none;
-	position: absolute;
-	top: 27px;
-	left: -1px;
-	margin: 0;
-	background-color: rgb(249, 249, 249);
-	width: 160px;
-	padding: 5px;
-	display: none;
-	z-index: 2;
-}
-
-#effectlist {
-	height: 200px;
-	overflow: auto;
-}
-
-.combo.active .combolist {
-	display: block;
-}
-
-.combolist li {
-	padding: 2px;
-}
-
-.combolist li:hover {
-	color: rgb(255, 255, 255);
-	background-color: rgb(38, 47, 104);
 }
 
 .slider_container1 {
@@ -206,8 +109,8 @@ body {
 
 .tempo_container {
 	position: absolute;
-	left: 410px;
-	bottom: 175px;
+	left: 430px;
+	bottom: 180px;
 	z-index: 1000;
 }
 
@@ -296,16 +199,6 @@ body {
 	background-color: rgba(0, 0, 0, 0.5);
 }
 
-#loadingcard {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgb(235, 235, 235)),
-	 to(rgb(255, 255, 255)));
-  -webkit-box-shadow:0px 2px 3px rgba(0, 0, 0, 0.2);
-	width: 260px;
-	height: 60px;
-	margin: 210px auto;
-	padding: 10px;
-}
-
 #loadingtext {
 	text-align: center;
 	margin: 5px 0;
@@ -317,127 +210,9 @@ body {
 }
 
 img.preload { display: none; }
-#MIDIPlugin { visibility: hidden; }
 
 #io { display:block; padding:5px 20px;}
 
-.label {
-	display: inline-block;
-	vertical-align: top;
-	width: 10px;
-	position: relative;
-	top: 12px;
-	text-align: right;
-	margin-right: 10px;
-}
-
-#padLeft {
-	height: 240px;
-	width: 340px;
-	display: inline-block;
-	vertical-align: top;
-	margin-left: 220px;
-	margin-top: 210px;
-	overflow: auto;
-}
-
-.buttons_rowL {
-
-}
-.buttons_rowR {
-}
-
-.buttons_col {
-	display: block;
-	float: left;
-  margin: 0 0 0 20px;
-}
-
-#space {
-	height: 20px;
-	vertical-align: top;
-	margin-right: 0px;
-}
-
-#tools {
-	height: 10px;
-}
-
-.btn {
-	padding: 0;
-	margin: 0;
-	border: 0;
-}
-
-#kitlabel, #effectlabel, #swinglabel {
-	top: 6px;
-}
-
-#beatlabel {
-	top: 8px;
-}
-
-.combo {
-	width: 158px;
-	height: 15px;
-
-	color: rgb(76, 76, 76);
-	display: inline-block;
-	vertical-align: top;
-	position: relative;
-	padding: 6px;
-	margin-bottom: 10px;
-}
-
-.combo img {
-	position: absolute;
-	left: 150px;
-	top: 11px;
-}
-
-.containerDM {
-	position: relative;
-	vertical-align: top;
-	horizontal-align: center;
-	top: -40px;
-	z-index: 1;
-}
-
-.mixerButtons {
-	position: absolute;
-	right: 500px;
-	bottom: 230px;
-	z-index: 2;
-}
-
-.selectorButtons {
-	position: absolute;
-	left: 145px;
-	bottom: 260px;
-	z-index: 2;
-}
-.combolist {
-	list-style-type: none;
-	position: absolute;
-	top: 27px;
-	left: -1px;
-	margin: 0;
-	background-color: rgb(249, 249, 249);
-	width: 160px;
-	padding: 5px;
-	display: none;
-	z-index: 2;
-}
-
 #load_ok, #load_cancel {
 	margin: 0 3px;
-}
-
-#loading {
-	position: fixed;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
 }

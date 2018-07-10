@@ -455,7 +455,6 @@ function initButtons() {
 }
 
 function advanceNote() {
-
     var secondsPerBeat = (60.0 / theBeat.tempo)*8;
 
     rhythmIndex++;
@@ -510,7 +509,7 @@ function schedule() {
     while (noteTime < currentTime + 0.120) {
         // Convert noteTime to context time.
         var contextPlayTime = noteTime + startTime;
-        if (theBeat.rhythm1[rhythmIndex]) {
+
           if(noteReg[0][0] != 0){
             playNote(currentKit.a1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm1[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
@@ -523,8 +522,6 @@ function schedule() {
           if(noteReg[0][3] != 0){
             playNote(currentKit.a4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm1[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-        }
-        if (theBeat.rhythm2[rhythmIndex]) {
           if(noteReg[1][0] != 0){
             playNote(currentKit.b1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm2[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
@@ -537,8 +534,6 @@ function schedule() {
           if(noteReg[1][3] != 0){
             playNote(currentKit.b4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm2[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-        }
-        if (theBeat.rhythm3[rhythmIndex]) {
           if(noteReg[2][0] != 0){
             playNote(currentKit.c1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm3[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
@@ -551,22 +546,18 @@ function schedule() {
           if(noteReg[2][3] != 0){
             playNote(currentKit.c4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm3[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-        }
-        if (theBeat.rhythm4[rhythmIndex]) {
-            if(noteReg[3][0] != 0){
-              playNote(currentKit.m1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
-            }
-            if(noteReg[3][1] != 0){
-              playNote(currentKit.m2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
-            }
-            if(noteReg[3][2] != 0){
-              playNote(currentKit.m3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
-            }
-            if(noteReg[3][3] != 0){
-              playNote(currentKit.m4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
-            }
-        }
-        if (theBeat.rhythm5[rhythmIndex]) {
+          if(noteReg[3][0] != 0){
+            playNote(currentKit.m1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
+          }
+          if(noteReg[3][1] != 0){
+            playNote(currentKit.m2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
+          }
+          if(noteReg[3][2] != 0){
+            playNote(currentKit.m3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
+          }
+          if(noteReg[3][3] != 0){
+            playNote(currentKit.m4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
+          }
           if(noteReg[4][0] != 0){
             playNote(currentKit.n1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm5[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
@@ -579,8 +570,6 @@ function schedule() {
           if(noteReg[4][3] != 0){
             playNote(currentKit.n4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm5[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-        }
-        if (theBeat.rhythm6[rhythmIndex]) {
           if(noteReg[5][0] != 0){
             playNote(currentKit.l1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm6[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
@@ -593,7 +582,6 @@ function schedule() {
           if(noteReg[5][3] != 0){
             playNote(currentKit.l4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm6[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-        }
         advanceNote();
     }
 }
