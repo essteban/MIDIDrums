@@ -18,6 +18,13 @@ var timeoutId;
 var tempo = 120;
 var stateReady = false;
 
+var tamON = false;
+var bunON = false;
+var cumON = false;
+var poON = false;
+var chaON = false;
+var loadStatus = false;
+
 var startTime;
 var lastDrawTime = -1;
 
@@ -29,11 +36,12 @@ var kMaxSwing = .08;
 
 var currentKit;
 
-var beatReset = {"kitIndex":0,"effectIndex":1,"tempo":120,"swingFactor":0,"effectMix":0.25,"kickPitchVal":0.5,"genPitchVal":0.5,"hihatPitchVal":0.5,"tom1PitchVal":0.5,"tom2PitchVal":0.5,"tom3PitchVal":0.5,"rhythm1":[0,0,0,0],"rhythm2":[0,0,0,0],"rhythm3":[0,0,0,0],"rhythm4":[0,0,0,0],"rhythm5":[0,0,0,0],"rhythm6":[0,0,0,0]};
+var beatReset = {"RFolk":"none","kitIndex":0,"effectIndex":1,"tempo":120,"swingFactor":0,"effectMix":0.25,"kickPitchVal":0.5,"genPitchVal":0.5,"hihatPitchVal":0.5,"tom1PitchVal":0.5,"tom2PitchVal":0.5,"tom3PitchVal":0.5,"rhythm1":[0,0,0,0],"rhythm2":[0,0,0,0],"rhythm3":[0,0,0,0],"rhythm4":[0,0,0,0],"rhythm5":[0,0,0,0],"rhythm6":[0,0,0,0]};
 
 function cloneBeat(source) {
     var beat = new Object();
 
+    beat.RFolk = source.RFolk;
     beat.kitIndex = source.kitIndex;
     beat.effectIndex = source.effectIndex;
     beat.tempo = source.tempo;
@@ -77,7 +85,7 @@ var volumes = [0, 0.3, 1];
 var kitCount = 0;
 var kitRockCount = 0;
 
-var kitName = ["tambora","bunde","chande","cumbia","porroc"];
+var kitName = ["tambora","cumbia","bunde","chande","porroc"];
 
 var kitNamePretty = [
     "tech"
@@ -87,11 +95,11 @@ function Kit(name) {
     this.name = name;
 
     this.pathName = function() {
-        var pathName = "sounds/loops/" + this.name + "/";
+        var pathName = "sounds/" + this.name + "/";
         return pathName;
     };
     this.pathNameM = function() {
-        var pathNameM = "sounds/loops/" + this.name + "M/";
+        var pathNameM = "sounds/" + this.name + "M/";
         return pathNameM;
     };
 
@@ -121,7 +129,7 @@ function Kit(name) {
     this.l3 = 0;
     this.l4 = 0;
 
-    this.instrumentCount = 6;
+    this.instrumentCount = kNumInstruments;
     this.instrumentLoadCount = 0;
 
     this.startedLoading = false;
@@ -215,7 +223,7 @@ function (buffer) { this.n4 = buffer; },
 function (buffer) { this.l1 = buffer; },
 function (buffer) { this.l2 = buffer; },
 function (buffer) { this.l3 = buffer; },
-function (buffer) { this.l4 = buffer; },];
+function (buffer) { this.l4 = buffer; }];
 
 Kit.prototype.loadSample = function(sampleID, url, mixToMono) {
 
@@ -336,11 +344,18 @@ function showPlayAvailable() {
 
 function init() {
 
+    try {
+        context = new AudioContext();
+    }
+    catch(e) {
+        alert("Web Audio API is not supported in this browser");
+    }
+
     startLoadingAssets();
 
     // NOTE: THIS NOW RELIES ON THE MONKEYPATCH LIBRARY TO LOAD
     // IN CHROME AND SAFARI (until they release unprefixed)
-    context = new AudioContext();
+    //context = new AudioContext();
 
     var finalMixNode;
     if (context.createDynamicsCompressor) {
@@ -490,94 +505,92 @@ function playNote(buffer, pan, x, y, z, sendGain, mainGain, playbackRate, noteTi
 
 function schedule() {
     var currentTime = context.currentTime;
-
     // The sequence starts at startTime, so normalize currentTime so that it's 0 at the start of the sequence.
     currentTime -= startTime;
-
     while (noteTime < currentTime + 0.120) {
         // Convert noteTime to context time.
         var contextPlayTime = noteTime + startTime;
         if (theBeat.rhythm1[rhythmIndex]) {
-          if(noteReg[0][0] == 1){
+          if(noteReg[0][0] != 0){
             playNote(currentKit.a1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm1[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[0][1] == 1){
+          if(noteReg[0][1] != 0){
             playNote(currentKit.a2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm1[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[0][2] == 1){
+          if(noteReg[0][2] != 0){
             playNote(currentKit.a3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm1[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[0][3] == 1){
+          if(noteReg[0][3] != 0){
             playNote(currentKit.a4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm1[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
         }
         if (theBeat.rhythm2[rhythmIndex]) {
-          if(noteReg[1][0] == 1){
+          if(noteReg[1][0] != 0){
             playNote(currentKit.b1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm2[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[1][1] == 1){
+          if(noteReg[1][1] != 0){
             playNote(currentKit.b2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm2[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[1][2] == 1){
+          if(noteReg[1][2] != 0){
             playNote(currentKit.b3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm2[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[1][3] == 1){
+          if(noteReg[1][3] != 0){
             playNote(currentKit.b4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm2[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
         }
         if (theBeat.rhythm3[rhythmIndex]) {
-          if(noteReg[2][0] == 1){
+          if(noteReg[2][0] != 0){
             playNote(currentKit.c1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm3[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[2][1] == 1){
+          if(noteReg[2][1] != 0){
             playNote(currentKit.c2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm3[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[2][2] == 1){
+          if(noteReg[2][2] != 0){
             playNote(currentKit.c3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm3[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[2][3] == 1){
+          if(noteReg[2][3] != 0){
             playNote(currentKit.c4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm3[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
         }
         if (theBeat.rhythm4[rhythmIndex]) {
-            if(noteReg[3][0] == 1){
+            if(noteReg[3][0] != 0){
               playNote(currentKit.m1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
             }
-            if(noteReg[3][1] == 1){
+            if(noteReg[3][1] != 0){
               playNote(currentKit.m2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
             }
-            if(noteReg[3][2] == 1){
+            if(noteReg[3][2] != 0){
               playNote(currentKit.m3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
             }
-            if(noteReg[3][3] == 1){
+            if(noteReg[3][3] != 0){
               playNote(currentKit.m4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm4[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
             }
         }
         if (theBeat.rhythm5[rhythmIndex]) {
-          if(noteReg[4][0] == 1){
+          if(noteReg[4][0] != 0){
             playNote(currentKit.n1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm5[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[4][1] == 1){
+          if(noteReg[4][1] != 0){
             playNote(currentKit.n2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm5[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[4][2] == 1){
+          if(noteReg[4][2] != 0){
             playNote(currentKit.n3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm5[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[4][3] == 1){
+          if(noteReg[4][3] != 0){
             playNote(currentKit.n4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm5[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
         }
         if (theBeat.rhythm6[rhythmIndex]) {
-          if(noteReg[5][0] == 1){
+          if(noteReg[5][0] != 0){
             playNote(currentKit.l1, false, 0,0,-2, 0.5, volumes[theBeat.rhythm6[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[5][1] == 1){
+          if(noteReg[5][1] != 0){
             playNote(currentKit.l2, false, 0,0,-2, 0.5, volumes[theBeat.rhythm6[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[5][2] == 1){
+          if(noteReg[5][2] != 0){
             playNote(currentKit.l3, false, 0,0,-2, 0.5, volumes[theBeat.rhythm6[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
-          if(noteReg[5][3] == 1){
+          if(noteReg[5][3] != 0){
             playNote(currentKit.l4, false, 0,0,-2, 0.5, volumes[theBeat.rhythm6[rhythmIndex]] * 1.0, genPitch, contextPlayTime);
           }
         }
@@ -695,8 +708,7 @@ function sliderSetValue(slider, value) {
     case 'pitch_thumb':
         theBeat.genPitchVal = value;
         genPitch = pitchRate;
-        console.log(value);
-        theBeat.tempo = Math.round(tempo * map_range(value,0,1,0.5,2));
+        theBeat.tempo = Math.round(tempo * map_range(value,0,1,0.7,1.3));
         document.getElementById('tempo').innerHTML = theBeat.tempo;
         break;
     case 'cross_thumb':
@@ -756,7 +768,7 @@ function handleButtonMouseDown(event) {
           drawNote(0, i, instrumentIndex);
         }
     }
-    //var note = notes[rhythmIndex];
+    var note = notes[rhythmIndex];
 }
 
 function handleBodyMouseDown(event) {
@@ -801,14 +813,7 @@ function writeToFile(text){
 }
 
 function handleSave(event) {
-    //toggleSaveContainer();
-    //var elTextarea = document.getElementById('save_textarea');
-    //elTextarea.value = JSON.stringify(theBeat);
     writeToFile(JSON.stringify(theBeat));
-}
-
-function handleSaveOk(event) {
-    //toggleSaveContainer();
 }
 
 function handleLoad(event) {
@@ -818,13 +823,22 @@ function handleLoad(event) {
 function handleLoadOk(event) {
   var elTextarea = document.getElementById('load_textarea');
   theBeat = JSON.parse(elTextarea.value);
-
   // Set drumkit
   currentKit = kits[theBeat.kitIndex];
 
   // Set effect
   setEffect(theBeat.effectIndex);
 
+  // Set kit button
+  bgImage(theBeat.RFolk);
+  changeText(theBeat.RFolk);
+
+  /*noteReg[0] = theBeat.rhythm1.slice(0);
+  noteReg[1] = theBeat.rhythm2.slice(0);
+  noteReg[2] = theBeat.rhythm3.slice(0);
+  noteReg[3] = theBeat.rhythm4.slice(0);
+  noteReg[4] = theBeat.rhythm5.slice(0);
+  noteReg[5] = theBeat.rhythm6.slice(0);*/
   // Change the volume of the convolution effect.
   setEffectLevel(theBeat);
 
@@ -843,23 +857,14 @@ function handleLoadOk(event) {
 
   toggleLoadContainer();
   updateControls();
+  stateReady = true;
 }
 
 function handleLoadCancel(event) {
     toggleLoadContainer();
 }
 
-function toggleSaveContainer() {
-    //document.getElementById('pad').classList.toggle('active');
-    //document.getElementById('params').classList.toggle('active');
-    //document.getElementById('tools').classList.toggle('active');
-    //document.getElementById('save_container').classList.toggle('active');
-}
-var loadStatus = false;
 function toggleLoadContainer() {
-    /*document.getElementById('pad').classList.toggle('active');
-    document.getElementById('params').classList.toggle('active');
-    document.getElementById('tools').classList.toggle('active');*/
     loadStatus = !loadStatus;
     if(loadStatus){
       document.getElementById('load_container').style["display"] = "block";
@@ -870,6 +875,8 @@ function toggleLoadContainer() {
 }
 
 function handleReset(event) {
+    play.src = "Imagenes/power.png";
+    stateReady = false;
     changeText("reset");
     handleStop();
     loadBeat(beatReset);
@@ -885,16 +892,41 @@ function handleSelector(event) {
 }
 
 function bgImage(value) {
-    if(value == "Tambora")
+    if(value == "Tambora"){
         document.getElementById('Tambora').src='Imagenes/tamboraon.png';
-    if(value == "Bunde")
-        document.getElementById('Bunde').src='Imagenes/bundeon.png';
-    if(value == "Chande")
-        document.getElementById('Chande').src='Imagenes/chandeon.png';
-    if(value == "Cumbia")
+        document.getElementById('Bunde').src='Imagenes/bundeoff.png';
+        document.getElementById('Chande').src='Imagenes/chandeoff.png';
+        document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
+        document.getElementById('Porro').src='Imagenes/porrooff.png';
+    }
+    if(value == "Cumbia"){
+        document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
+        document.getElementById('Bunde').src='Imagenes/bundeoff.png';
+        document.getElementById('Chande').src='Imagenes/chandeoff.png';
         document.getElementById('Cumbia').src='Imagenes/cumbiaon.png';
-    if(value == "Porro")
+        document.getElementById('Porro').src='Imagenes/porrooff.png';
+    }
+    if(value == "Bunde"){
+        document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
+        document.getElementById('Bunde').src='Imagenes/bundeon.png';
+        document.getElementById('Chande').src='Imagenes/chandeoff.png';
+        document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
+        document.getElementById('Porro').src='Imagenes/porrooff.png';
+    }
+    if(value == "Porro"){
+        document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
+        document.getElementById('Bunde').src='Imagenes/bundeoff.png';
+        document.getElementById('Chande').src='Imagenes/chandeoff.png';
+        document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
         document.getElementById('Porro').src='Imagenes/porroon.png';
+    }
+    if(value == "Chande"){
+        document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
+        document.getElementById('Bunde').src='Imagenes/bundeoff.png';
+        document.getElementById('Chande').src='Imagenes/chandeon.png';
+        document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
+        document.getElementById('Porro').src='Imagenes/porrooff.png';
+    }
     if(value == "save")
         document.getElementById('save').src='Imagenes/guardar_on.png';
     if(value == "load")
@@ -904,16 +936,6 @@ function bgImage(value) {
 }
 
 function bgOutImage(value) {
-  if(value == "Tambora")
-      document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
-  if(value == "Bunde")
-      document.getElementById('Bunde').src='Imagenes/bundeoff.png';
-  if(value == "Chande")
-      document.getElementById('Chande').src='Imagenes/chandeoff.png';
-  if(value == "Cumbia")
-      document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
-  if(value == "Porro")
-      document.getElementById('Porro').src='Imagenes/porrooff.png';
   if(value == "save")
       document.getElementById('save').src='Imagenes/btn_save.png';
   if(value == "load")
@@ -994,6 +1016,7 @@ function changeText(value) {
 
   if(value == "Bunde calle"){
       stateReady = true;
+      theBeat.RFolk = "Bunde";
       updateControls();
 
       theBeat.tempo = 135;
@@ -1001,6 +1024,7 @@ function changeText(value) {
    }
    if(value == "Porro chocoano"){
       stateReady = true;
+      theBeat.RFolk = "Porro";
       updateControls();
 
       theBeat.tempo = 130;
@@ -1008,14 +1032,15 @@ function changeText(value) {
     }
    if(value == "Tambora"){
      stateReady = true;
-     updateControls();
-
+     theBeat.RFolk = "Tambora";
      theBeat.tempo = 120;
      tempo = 120;
      document.getElementById('tempo').innerHTML = theBeat.tempo;
+     updateControls();
    }
    if(value == "Chande"){
      stateReady = true;
+     theBeat.RFolk = "Chande";
      updateControls();
 
      theBeat.tempo = 140;
@@ -1023,22 +1048,18 @@ function changeText(value) {
    }
    if(value == "Cumbia"){
      stateReady = true;
+     theBeat.RFolk = "Cumbia";
      updateControls();
 
      theBeat.tempo = 104;
      document.getElementById('tempo').innerHTML = theBeat.tempo;
    }
    if(value == "reset"){
+      document.getElementById('Tambora').src='Imagenes/tamboraoff.png';
+      document.getElementById('Bunde').src='Imagenes/bundeoff.png';
+      document.getElementById('Chande').src='Imagenes/chandeoff.png';
+      document.getElementById('Cumbia').src='Imagenes/cumbiaoff.png';
+      document.getElementById('Porro').src='Imagenes/porrooff.png';
       stateReady = false;
-
-      /*document.getElementById('pText').innerHTML = "Selecciona un ritmo folklórico";
-
-      document.getElementById('linea1f').innerHTML = "";
-      document.getElementById('linea2f').innerHTML = "";
-      document.getElementById('linea3f').innerHTML = "";
-
-      document.getElementById('linea1m').innerHTML = "";
-      document.getElementById('linea2m').innerHTML = "";
-      document.getElementById('linea3m').innerHTML = "";*/
     }
-  }
+}

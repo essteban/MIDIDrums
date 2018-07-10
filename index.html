@@ -43,6 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
 <script type="text/javascript" src="js/drummachine.js"></script>
+<script type="text/javascript" src="js/bufferLoader.js"></script>
 
 </head>
 <!-- Preload some important UI elements -->
@@ -61,11 +62,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   <div class="container">
     <img id='BG'  class='bg' src='Imagenes/background.png'>
     <div class='buttons_Folk' id'pad'>
-      <div><img id='Tambora'  class='btn' src='Imagenes/tamboraoff.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
-      <div><img id='Cumbia' class='btn' src='Imagenes/cumbiaoff.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
-      <div><img id='Bunde' class='btn' src='Imagenes/bundeoff.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
-      <div><img id='Porro' class='btn' src='Imagenes/porrooff.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
-      <div><img id='Chande' class='btn' src='Imagenes/chandeoff.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
+      <div><img id='Tambora'  class='btn' src='Imagenes/tamboraoff.png' onmousedown="bgImage(this.id)"></div>
+      <div><img id='Cumbia' class='btn' src='Imagenes/cumbiaoff.png' onmousedown="bgImage(this.id)"></div>
+      <div><img id='Bunde' class='btn' src='Imagenes/bundeoff.png' onmousedown="bgImage(this.id)"></div>
+      <div><img id='Porro' class='btn' src='Imagenes/porrooff.png' onmousedown="bgImage(this.id)"></div>
+      <div><img id='Chande' class='btn' src='Imagenes/chandeoff.png' onmousedown="bgImage(this.id)"></div>
     </div>
     <div class='buttons_FolkDM' id='pad'>
       <div class='buttons_row'>
@@ -134,7 +135,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <div><img id='load' src='Imagenes/btn_load.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
     <div><img id='reset' src='Imagenes/btn_reset.png' onmouseover="bgImage(this.id)" onmouseout="bgOutImage(this.id)"></div>
     <div>
-      <img id='play' src='Imagenes/btn_play.png'>
+      <img id='play' src='Imagenes/power.png'>
       <img id='stop' src='Imagenes/btn_stop.png'>
       </div>
     </div>

@@ -3,7 +3,6 @@ body {
 	color: rgb(121, 121, 121);
 	font-family: 'Droid Sans', Arial, sans-serif;
 	font-size: 13px;
-	background: url(../Imagenes/background1.png) no-repeat center center fixed;
 -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;
@@ -434,25 +433,6 @@ img.preload { display: none; }
 	padding: 5px;
 	display: none;
 	z-index: 2;
-}
-
-#effectlist {
-	height: 200px;
-	overflow: auto;
-}
-
-.combolist li {
-	padding: 2px;
-}
-
-.combolist li:hover {
-	color: rgb(255, 255, 255);
-	background-color: rgb(38, 47, 104);
-}
-
-#load_buttons {
-	margin: 0 auto;
-	width: 160px;
 }
 
 #load_ok, #load_cancel {
