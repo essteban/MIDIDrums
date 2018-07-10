@@ -22,12 +22,6 @@ body {
 	position: relative;
 }
 
-.bg {
-	position: relative;
-  display: inline-block;
-	z-index: 1;
-}
-
 .buttons_row {
 	z-index: 1000;
 }
@@ -59,12 +53,6 @@ body {
 	z-index: 1000;
 	top: 255px;
 	right: 165px;
-}
-
-.btn {
-	padding: 0;
-	margin: 0;
-	border: 0;
 }
 
 .containerDM {
@@ -212,7 +200,3 @@ body {
 img.preload { display: none; }
 
 #io { display:block; padding:5px 20px;}
-
-#load_ok, #load_cancel {
-	margin: 0 3px;
-}
