@@ -106,7 +106,7 @@ function Kit(name) {
     this.a1 = 0;
     this.a2 = 0;
     this.a3 = 0;
-    this.a4 = 0;
+    /*this.a4 = 0;
     this.b1 = 0;
     this.b2 = 0;
     this.b3 = 0;
@@ -127,7 +127,7 @@ function Kit(name) {
     this.l1 = 0;
     this.l2 = 0;
     this.l3 = 0;
-    this.l4 = 0;
+    this.l4 = 0;*/
 
     this.instrumentCount = kNumInstruments;
     this.instrumentLoadCount = 0;
